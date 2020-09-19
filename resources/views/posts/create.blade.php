@@ -21,7 +21,8 @@
                         class="form-control @error('caption') is-invalid @enderror" 
                         value="{{ old('caption') }}" 
                         autocomplete="caption" autofocus>
-                    
+                    <!-- {{ old('caption') }} -> Eğer validation başarısız olursa son yazılan girdilerin görünmesi için -->
+
                     @error('caption')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

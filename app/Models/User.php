@@ -40,7 +40,7 @@ class User extends Authenticatable
 
     public function posts()     // s ekine dikkat! çoğul. Öünkü n:m ilişki var.
     {
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Post::class)->orderBy('created_at', 'DESC');
     }
 
     public function profile()   // 1:1 ilişki
