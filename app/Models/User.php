@@ -38,12 +38,34 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function posts()     // s ekine dikkat! çoğul. Öünkü n:m ilişki var.
+    protected static function boot()
+    {
+        parent::boot();
+
+        // override ediyoruz;
+        // created() event'i her user yaratıldığında tetiklenecek.
+        // profiles talosundaki tüm alanlar nullable olduğu için 'title' => $user->username yazmamıza gerek yoktu ama profil bomboş kalmasın deyu yazdık.
+        static::created(function($user) {
+            $user->profile()->create([
+                'title' => $user->username,
+            ]);
+        });
+    }
+
+    public function posts()     // s ekine dikkat! çoğul. Öünkü 1:m ilişki var.
     {
         return $this->hasMany(Post::class)->orderBy('created_at', 'DESC');
     }
 
-    public function profile()   // 1:1 ilişki
+    // User birden çok kullanıcı takip edebilir.
+    // m:n ilişki
+    public function following()
+    {
+        return $this->belongsToMany(Profile::class);
+    }
+
+    // 1:1 ilişki
+    public function profile()   
     {
         return $this->hasOne(Profile::class);
     }
