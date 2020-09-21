@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image; // Image Intervention kütüphanesini kullanabilmek için eklendi
 
@@ -13,13 +14,27 @@ class PostsController extends Controller
         $this->middleware('auth');
     }
 
+    public function index()
+    {
+        // Gönderiler doğrudan profile değilde user'a bağlı oldukları için...
+        // pluck('profiles.user_id') -> Takip edilen user_id'leri verecek.
+        // $users -> Giriş yapmış olan kullanıcnın takip ettiği user'ların id'si
+        $users = auth()->user()->following()->pluck('profiles.user_id');
+
+        // whereIn() -> dizi geçireceğimiz için. where user_id is in $users
+        // latest() -> Yaratılma tarihine göre sondan başa doğru sıralayacak. Bunun yerine orderBy('created_at', 'DESC') de kullanabilirdik
+        // with('user') -> N+1 problemini çözmek için
+        $posts = Post::whereIn('user_id', $users)->with('user')->latest()->paginate(5);
+
+        return view('posts/index', compact('posts'));
+    }
+
     // 1- Yaratacağımız view dosyası, controller fonksiyonuyla aynı isimde. 
     // 2- Klasör adıysa controller isminin ilk bölümüyle aynı.
     // 3- posts.create şeklinde de yazılabilirdi.
     public function create()
     {
-        return view('posts/create'); 
-        
+        return view('posts/create');         
     }
 
     public function store()
