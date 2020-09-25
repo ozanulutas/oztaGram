@@ -15,14 +15,26 @@
         <div class="row pt-2 pb-4">
             <div class="col-6 offset-3">
                 <div>           
-                    <p> 
-                        <span class="font-weight-bold">
-                            <a href="/profile/{{ $post->user->id }}">
-                                <span class="text-dark">{{ $post->user->username }}</span>
-                            </a>
-                        </span> {{ $post->caption }}                
+                    <p>                         
+                        <a href="/profile/{{ $post->user->id }}">
+                            <span class="text-dark font-weight-bold">{{ $post->user->username }}</span>
+                        </a>                       
+                        {{ $post->caption }} 
+                        @foreach($post->comments as $comment)    
+                            <p>
+                                <a href="/profile/{{ $comment->user->id }}">
+                                    <span class="text-dark font-weight-bold">{{ $comment->user->username }}</span>
+                                </a>
+                                {{ $comment->comment }}
+                            </p> 
+                        @endforeach          
                     </p>
                 </div>
+                <form action="/comment/{{ $post->id }}" method="post">
+                    @csrf
+                    <textarea name="comment" cols="30" rows="2" placeholder="Add Comment..."></textarea>
+                    <button>Share</button>
+                </form>
             </div>
         </div> 
     @endforeach  

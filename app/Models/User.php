@@ -57,9 +57,20 @@ class User extends Authenticatable
         });
     }
 
+    // 1:1 ilişki
+    public function profile()   
+    {
+        return $this->hasOne(Profile::class);
+    }
+
     public function posts()     // s ekine dikkat! çoğul. Öünkü 1:m ilişki var.
     {
         return $this->hasMany(Post::class)->orderBy('created_at', 'DESC');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 
     // User birden çok kullanıcı takip edebilir.
@@ -69,9 +80,5 @@ class User extends Authenticatable
         return $this->belongsToMany(Profile::class);
     }
 
-    // 1:1 ilişki
-    public function profile()   
-    {
-        return $this->hasOne(Profile::class);
-    }
+    
 }

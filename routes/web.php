@@ -31,3 +31,5 @@ Route::get('/profile/{user}', [App\Http\Controllers\ProfilesController::class, '
 Route::get('/profile/{user}/edit', [App\Http\Controllers\ProfilesController::class, 'edit'])->name('profile.edit'); // Formu gösterecek
 Route::patch('/profile/{user}', [App\Http\Controllers\ProfilesController::class, 'update'])->name('profile.update'); // Asıl kayıt güncelleme işlemini yatıracak
 
+Route::post('/comment/{post}', [App\Http\Controllers\CommentsController::class, 'store']);
+

@@ -25,6 +25,7 @@ class PostsController extends Controller
         // latest() -> Yaratılma tarihine göre sondan başa doğru sıralayacak. Bunun yerine orderBy('created_at', 'DESC') de kullanabilirdik
         // with('user') -> N+1 problemini çözmek için
         $posts = Post::whereIn('user_id', $users)->with('user')->latest()->paginate(5);
+       
 
         return view('posts/index', compact('posts'));
     }

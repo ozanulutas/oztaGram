@@ -24,16 +24,28 @@
                     </div>
                 </div>
             </div>
-
-            <hr>
-        
-            <p> 
-                <span class="font-weight-bold">
-                    <a href="/profile/{{ $post->user->id }}">
-                        <span class="text-dark">{{ $post->user->username }}</span>
-                    </a>
-                </span> {{ $post->caption }}                
+            <hr>        
+            <p>                
+                <a href="/profile/{{ $post->user->id }}">
+                    <span class="text-dark font-weight-bold">{{ $post->user->username }}</span>
+                </a>                
+                {{ $post->caption }}                
             </p>
+
+            @foreach($post->comments as $comment)
+                <p>
+                    <a href="/profile/{{ $comment->user->id }}">
+                        <span class="text-dark font-weight-bold">{{ $comment->user->username }}</span>
+                    </a>                    
+                    {{ $comment->comment }}
+                </p>
+            @endforeach
+
+            <form action="/comment/{{ $post->id }}" method="post">
+                @csrf
+                <textarea name="comment" cols="30" rows="2" placeholder="Add Comment..."></textarea>
+                <button>Share</button>
+            </form>
         </div>
     </div>   
 

@@ -18,6 +18,13 @@ class Profile extends Model
         return '/storage/' . $imagePath;
     }
 
+    // İsimlendirme önemli, sınıf ismyile aynı olmalı.
+    // 1:1 ilişki
+    public function user() 
+    {
+        return $this->belongsTo(User::class);
+    }
+
     // Bir profilin birden çok kullanıcı takipçisi olabilir
     // m:n ilişki
     public function followers()
@@ -25,10 +32,5 @@ class Profile extends Model
         return $this->belongsToMany(User::class);
     }
 
-    // İsimlendirme önemli, sınıf ismyile aynı olmalı.
-    // 1:1 ilişki
-    public function user() 
-    {
-        return $this->belongsTo(User::class);
-    }
+    
 }
